@@ -108,3 +108,38 @@ const NestedSchemaObject = getMockDoc(NestedSchema);
 
 #### `clearMockValues(schema)`
 Used to remove any `mockValue` instance existing in your schema. Will only run with `NODE_ENV !== 'test'`
+
+```js
+import SimpleSchema from 'simpl-schema';
+import { clearMockValues } from 'simpl-schema-mockdoc';
+
+const BasicSchemaWithMock = new SimpleSchema({
+  arrayField: {
+    type: Array,
+    mockValue: ['foo'],
+  },
+  booleanField: {
+    type: Boolean,
+    mockValue: true,
+  },
+  dateField: {
+    type: Date,
+    mockValue: new Date(86400000),
+  },
+  numberField: {
+    type: Number,
+    mockValue: 42,
+  },
+  objectField: {
+    type: Object,
+    mockValue: { bar: 'baz' },
+  },
+  stringField: {
+    type: String,
+    mockValye: 'myValue',
+  },
+});
+
+const BasicSchema = clearMockValues(BasicSchemaWithMock);
+// BasicSchema is now the one defined above
+```
