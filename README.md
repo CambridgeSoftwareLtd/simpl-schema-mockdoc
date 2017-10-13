@@ -16,14 +16,14 @@ The prefix is used to generate the seed and to get the mock value. For example, 
 `getMockDoc` handles the following options in your field definition (in this order):
 - `mockValue`: specify the value you want to avoid random generation
 - `defaultValue`
-- `autoValue`: will try to use the autoValue function, falling back to the random generation would that fail
+- `autoValue`: will try to use the autoValue function, falling back to the random generation if autoValue fails
 - `allowedValues`: will take a random argument in the array
 
 For `Number` fields, the `min` and `max` values will also be looked up before generating a random number.
 
 For ` String` fields, the `regEx` value will be used if it matches one of the `SimpleSchema.RegEx.*`
 
-Finally, if you schema contains field defined by another schema, the function will crawl those as well to generate the document.
+Finally, if your schema contains a field defined by another schema, the function will crawl those as well to generate the document.
 
 **NB**: The function will only run with `NODE_ENV === 'test'`
 
