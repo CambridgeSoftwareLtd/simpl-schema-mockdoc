@@ -10,10 +10,10 @@ npm install --save-dev simpl-schema-mockdoc
 - `schema`: an instance of SimpleSchema
 - `prefix` (optional): a string to be used as prefix (default `'mock'`)
 
-Given a schema, `getMockDoc` will generate an object that matches the schema structure, using randomly generated fake data. These values are generated using [faker.js](https://github.com/Marak/faker.js) and using a seed to ensure reproducibility.
+Given a schema, `getMockDoc` will generate an object that matches the schema structure, using randomly generated fake data. These values are generated using [faker.js](https://github.com/Marak/faker.js) and use a seed to ensure reproducibility.
 The prefix is used to generate the seed and to get the mock value. For example, a `String` field named `foo` would generate the value `mockFoo` by default. Using `getMockDoc(schema, 'myPrefix')`, you would receive `myPrefixFoo`.
 
-`getMockDoc` handles the following options on your field definition (in that order):
+`getMockDoc` handles the following options in your field definition (in this order):
 - `mockValue`: specify the value you want to avoid random generation
 - `defaultValue`
 - `autoValue`: will try to use the autoValue function, falling back to the random generation would that fail
