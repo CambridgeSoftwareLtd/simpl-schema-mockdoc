@@ -19,7 +19,7 @@
     "jest"
   ],
   "license": "ISC",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
     "dist",
     "README.md"
