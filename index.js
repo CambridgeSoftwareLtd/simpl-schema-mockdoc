@@ -1,10 +1,20 @@
 import _ from 'lodash';
+import faker from 'faker';
 import SimpleSchema from 'simpl-schema';
 
-exports.getMockDoc = function getMockDoc(schema, prefix) {
+SimpleSchema.extendOptions(['mockValue']);
+
+export function getMockDoc(schema, prefix) {
   const docPrefix = prefix || 'mock';
   const mockDoc = {};
-  if (process.env.NODE_ENV !== 'test') {
+  const seed = _.chain(docPrefix)
+    .split('')
+    .map(char => char.charCodeAt())
+    .sum()
+    .value();
+  faker.seed(seed);
+
+  if (process.env.NODE_ENV !== 'test' || !schema) {
     return mockDoc;
   }
 
@@ -17,66 +27,72 @@ exports.getMockDoc = function getMockDoc(schema, prefix) {
       return;
     }
 
+    const defField = _.get(field, 'type.definitions[0]') || field;
+
     try {
       if (!_.isUndefined(field.mockValue)) {
         fieldValue = field.mockValue;
       } else if (!_.isUndefined(field.defaultValue)) {
         fieldValue = field.defaultValue;
-      } else if (_.isArray(field.allowedValues)) {
-        fieldValue = field.allowedValues[0];
+      } else if (!_.isUndefined(field.autoValue)) {
+        fieldValue = field.autoValue.call({ operator: null });
+      } else if (_.isArray(defField.allowedValues)) {
+        fieldValue = defField.allowedValues[0];
       } else {
         throw new Error('Invalid');
       }
     } catch (err) {
-      // Need 'field' for field like: `key: Boolean`
-      const fieldType = field.type || field;
+      // Need 'defField' for field like: `key: Boolean`
+      const fieldType = defField.type || defField;
 
       switch (fieldType) {
         case Date:
-          fieldValue = new Date(86400000);
+          fieldValue = new Date(faker.random.number() * 1000);
           break;
 
         case Number:
-          fieldValue = field.min || field.max || 42;
+          fieldValue = defField.min || defField.max || faker.random.number();
           break;
 
         case String:
           fieldValue = `${docPrefix}${_.upperFirst(_.camelCase(key))}`;
-          if (field.regEx) {
-            switch (field.regEx) {
-              case SimpleSchema.RegEx.Email:
-              case SimpleSchema.RegEx.EmailWithTLD:
-                fieldValue = 'john.doe@domain.com';
+          if (defField.regEx) {
+            switch (String(defField.regEx)) {
+              case String(String(SimpleSchema.RegEx.Email)):
+              case String(String(SimpleSchema.RegEx.EmailWithTLD)):
+                fieldValue = faker.internet.email();
                 break;
 
-              case SimpleSchema.RegEx.Domain:
-              case SimpleSchema.RegEx.WeakDomain:
-                fieldValue = 'domain.com';
+              case String(SimpleSchema.RegEx.Domain):
+              case String(SimpleSchema.RegEx.WeakDomain):
+                fieldValue = `${faker.internet.domainName()}${faker.internet.domainWord()}`;
                 break;
 
-              case SimpleSchema.RegEx.IP:
-              case SimpleSchema.RegEx.IPv4:
-                fieldValue = '127.0.0.1';
+              case String(SimpleSchema.RegEx.IP):
+              case String(SimpleSchema.RegEx.IPv4):
+                fieldValue = faker.internet.ip();
                 break;
 
-              case SimpleSchema.RegEx.IPv6:
-                fieldValue = '0000:aaaa:1111:bbbb:2222:cccc:3333:dddd';
+              case String(SimpleSchema.RegEx.IPv6):
+                fieldValue = faker.internet.ipv6();
                 break;
 
-              case SimpleSchema.RegEx.Url:
-                fieldValue = 'http://www.domain.com';
+              case String(SimpleSchema.RegEx.Url):
+                fieldValue = faker.internet.url();
                 break;
 
-              case SimpleSchema.RegEx.Id:
-                fieldValue = 'A1b2C3d4E5f6G7h8I';
+              case String(SimpleSchema.RegEx.Id):
+                fieldValue = faker.random.alphaNumeric(17);
                 break;
 
-              case SimpleSchema.RegEx.ZipCode:
-                fieldValue = '12345';
+              case String(SimpleSchema.RegEx.ZipCode):
+                fieldValue = faker.address.zipCode();
                 break;
 
-              case SimpleSchema.RegEx.Phone:
-                fieldValue = key.match(/mobile/i) ? '07789 789 123' : '01223 789 123';
+              case String(SimpleSchema.RegEx.Phone):
+                fieldValue = key.match(/mobile/i)
+                  ? faker.phone.phoneNumber('074## ######')
+                  : faker.phone.phoneNumber('012## ######');
                 break;
 
               default:
@@ -86,7 +102,7 @@ exports.getMockDoc = function getMockDoc(schema, prefix) {
           break;
 
         case Boolean:
-          fieldValue = !_.isUndefined(field.defaultValue) ? field.defaultValue : true;
+          fieldValue = !_.isUndefined(defField.defaultValue) ? defField.defaultValue : faker.random.boolean();
           break;
 
         case Object: {
@@ -112,7 +128,7 @@ exports.getMockDoc = function getMockDoc(schema, prefix) {
   return mockDoc;
 }
 
-exports.getMockDoc = function clearMockValues(schema) {
+export function clearMockValues(schema) {
   if (process.env.NODE_ENV === 'test') {
     return schema;
   }
@@ -121,4 +137,4 @@ exports.getMockDoc = function clearMockValues(schema) {
     schema._schema[key] = _.omit(field, 'mockValue');
   });
   return schema;
-};
+}
