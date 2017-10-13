@@ -55,7 +55,7 @@ const BasicSchema = new SimpleSchema({
 
 const BasicSchemaObject = getMockDoc(BasicSchema);
 /*
-{
+returns: {
   arrayField: [],
   booleanField: true,
   dateField: new Date(67032000),
@@ -67,7 +67,7 @@ const BasicSchemaObject = getMockDoc(BasicSchema);
 
 const BasicSchemaObjectPrefix = getMockDoc(BasicSchema, 'prefix');
 /*
-{
+returns: {
   arrayField: [],
   booleanField: false,
   dateField: new Date(13994000),
@@ -88,7 +88,7 @@ const NestedSchema = new SimpleSchema({
 
 const NestedSchemaObject = getMockDoc(NestedSchema);
 /*
-{
+returns: {
   arrayField: ['foo'],
   arrayFieldSchema: [BasicSchemaWithMockObject],
   objectField: {
