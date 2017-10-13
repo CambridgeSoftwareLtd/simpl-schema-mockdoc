@@ -1,6 +1,6 @@
 {
   "name": "simpl-schema-mockdoc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Allow to easily create mock document for jest from simpl-schema",
   "author": "Cambridge Software Ltd",
   "contributors": [
