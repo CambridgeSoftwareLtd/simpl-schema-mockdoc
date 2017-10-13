@@ -1,20 +1,34 @@
 {
   "name": "simpl-schema-mockdoc",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Allow to easily create mock document for jest from simpl-schema",
+  "author": "Cambridge Software Ltd",
+  "contributors": [{
+    "name": "Ben Miles",
+    "email": "ben.miles@cambridgesoftware.com"
+  },
+  {
+    "name": "Maxime Guitet",
+    "email": "maxime.guitet@cambridgesoftware.com"
+  }],
+  "keywords": ["node-simple-schema", "simpl-schema", "jest"],
+  "license": "ISC",
+
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "node-simple-schema",
-    "simpl-schema",
-    "jest"
-  ],
-  "author": "Maxime Guitet",
-  "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.4",
     "simpl-schema": "^0.3.2"
+  },
+
+  "homepage": "https://github.com/CambridgeSoftwareLtd/simpl-schema-mockdoc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CambridgeSoftwareLtd/simpl-schema-mockdoc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CambridgeSoftwareLtd/simpl-schema-mockdoc/issues"
   }
 }
