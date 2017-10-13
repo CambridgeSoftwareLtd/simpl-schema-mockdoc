@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 SimpleSchema.extendOptions(['mockValue']);
 
-export function getMockDoc(schema, prefix) {
+const getMockDoc = (schema, prefix) => {
   const docPrefix = prefix || 'mock';
   const mockDoc = {};
   const seed = _.chain(docPrefix)
@@ -128,7 +128,7 @@ export function getMockDoc(schema, prefix) {
   return mockDoc;
 }
 
-export function clearMockValues(schema) {
+const clearMockValues = schema => {
   if (process.env.NODE_ENV === 'test') {
     return schema;
   }
@@ -138,3 +138,5 @@ export function clearMockValues(schema) {
   });
   return schema;
 }
+
+export { clearMockValues, getMockDoc }
