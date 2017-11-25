@@ -62,6 +62,10 @@ const BasicSchemaWithMock = new SimpleSchema({
     type: Number,
     mockValue: 42,
   },
+  simpleSchemaIntegerField: {
+    type: SimpleSchema.Integer,
+    mockValue: 43
+  },
   objectField: {
     type: Object,
     mockValue: { bar: 'baz' },
@@ -88,6 +92,7 @@ const BasicSchemaWithMockObject = {
   booleanFieldFalse: false,
   dateField: new Date(86400000),
   numberField: 42,
+  simpleSchemaIntegerField: 43,
   objectField: { bar: 'baz' },
   stringFieldDefault: 'myValue',
   stringFieldAllowed: 'value1',
