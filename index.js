@@ -51,6 +51,7 @@ const getMockDoc = (schema, prefix) => {
           break;
 
         case Number:
+        case SimpleSchema.Integer:
           fieldValue = defField.min || defField.max || faker.random.number();
           break;
 
