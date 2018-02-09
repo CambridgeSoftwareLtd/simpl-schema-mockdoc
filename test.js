@@ -41,6 +41,9 @@ const BasicSchemaObjectPrefix = {
   stringField: 'prefixStringField',
 };
 
+const BasicSchemaObjectWithId = Object.assign({}, BasicSchemaObject);
+BasicSchemaObjectWithId._id = 'zkwf4oyoeab8hu757';
+
 const BasicSchemaWithMock = new SimpleSchema({
   arrayField: {
     type: Array,
@@ -246,6 +249,11 @@ describe('getMockDoc', () => {
   it('returns an object for a basic Schema with prefix', () => {
     const mockObject = getMockDoc(BasicSchema, 'prefix');
     expect(mockObject).toEqual(BasicSchemaObjectPrefix);
+  });
+
+  it('returns an object for a basic Schema with `addId`', () => {
+    const mockObject = getMockDoc(BasicSchema, 'mock', true);
+    expect(mockObject).toEqual(BasicSchemaObjectWithId);
   });
 
   it('returns an object for a basic Schema with default/mock', () => {

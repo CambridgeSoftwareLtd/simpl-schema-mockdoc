@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 SimpleSchema.extendOptions(['mockValue']);
 
-const getMockDoc = (schema, prefix) => {
+const getMockDoc = (schema, prefix, addId) => {
   const docPrefix = prefix || 'mock';
   const mockDoc = {};
   const seed = _.chain(docPrefix)
@@ -117,7 +117,7 @@ const getMockDoc = (schema, prefix) => {
 
         default:
           if (fieldType instanceof SimpleSchema || _.get(fieldType, '_schema')) {
-            fieldValue = getMockDoc(fieldType);
+            fieldValue = getMockDoc(fieldType, prefix);
           }
           break;
       }
@@ -125,6 +125,10 @@ const getMockDoc = (schema, prefix) => {
 
     _.set(mockDoc, key.replace('.$', '.0'), fieldValue);
   });
+
+  if (addId) {
+    mockDoc._id = faker.random.alphaNumeric(17);
+  }
 
   return mockDoc;
 }
